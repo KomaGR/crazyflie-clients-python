@@ -564,12 +564,32 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             thrustPercentage = self.thrustSlider.value()
             thrustValue = int(round((max_thrust - min_thrust) * thrustPercentage / 100))
 
+            iUpper = int(self.iterationsText.text())
+            decrPerc = 1.0 - float(self.decreasePercText.text())
+            countMax = int(self.countText.text())
+
             self.cf.commander.send_setpoint(0, 0, 0, 0)
 
             while count < 20:
                 self.cf.commander.send_setpoint(roll, pitch, yaw, thrustValue)
                 time.sleep(0.1)
                 count += 1
+
+            # for i in range(1, iUpper):
+            #     thrustValue = int(round((max_thrust - min_thrust) * (1.0 - (i*decrPerc)) * thrustPercentage / 100))
+            #     count = 0
+            #     while count < countMax:
+            #         self.cf.commander.send_setpoint(roll, pitch, yaw, thrustValue)
+            #         time.sleep(0.1)
+            #         count += 1
+
+            for i in range(1, iUpper):
+                thrustValue = int(round(decrPerc * thrustValue))
+                count = 0
+                while count < countMax:
+                    self.cf.commander.send_setpoint(roll, pitch, yaw, thrustValue)
+                    time.sleep(0.1)
+                    count += 1
 
             self.cf.commander.send_setpoint(0, 0, 0, 0)
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>872</width>
-    <height>671</height>
+    <width>1168</width>
+    <height>722</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -189,7 +189,7 @@
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox">
-        <layout class="QHBoxLayout" stretch="0,0,0,1,0,0,0">
+        <layout class="QHBoxLayout" stretch="0,0,0,1,0,0,0,0,0,0,0,0,0">
          <item>
           <widget class="QPushButton" name="autoControl">
            <property name="enabled">
@@ -227,6 +227,60 @@
            </property>
            <property name="checked">
             <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Iterations</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="iterationsText">
+           <property name="text">
+            <string>5</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Decrease</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="decreasePercText">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>0.01</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Count</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="countText">
+           <property name="text">
+            <string>20</string>
            </property>
           </widget>
          </item>
@@ -279,8 +333,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>852</width>
-           <height>498</height>
+           <width>1148</width>
+           <height>549</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -322,8 +376,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>872</width>
-     <height>25</height>
+     <width>1168</width>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
