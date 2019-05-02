@@ -64,6 +64,8 @@ from .dialogs.cf2config import Cf2ConfigDialog
 from .dialogs.inputconfigdialogue import InputConfigDialogue
 from .dialogs.logconfigdialogue import LogConfigDialogue
 
+import time
+
 __author__ = 'Bitcraze AB'
 __all__ = ['MainUI']
 
@@ -475,6 +477,8 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.menuItemBootloader.setEnabled(True)
             self.logConfigAction.setEnabled(False)
             self.interfaceCombo.setEnabled(True)
+
+            self.thrustSlider.valueChanged.connect(self._changeThrust)
         elif self.uiState == UIState.CONNECTED:
             s = "Connected on %s" % self._selected_interface
             self.setWindowTitle(s)
@@ -490,6 +494,10 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             if len(self.cf.mem.get_mems(MemoryElement.TYPE_I2C)) > 0:
                 self._menu_cf2_config.setEnabled(True)
             self._menu_cf1_config.setEnabled(False)
+
+            self.autoControl.setEnabled(True)
+            self.autoControl.clicked.connect(self._setThrust)
+            self.thrustSlider.valueChanged.connect(self._changeThrust)
         elif self.uiState == UIState.CONNECTING:
             s = "Connecting to {} ...".format(self._selected_interface)
             self.setWindowTitle(s)
@@ -529,6 +537,45 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.removeDockWidget(dockToolbox)
             dockToolbox.hide()
             menuItem.setChecked(False)
+
+    def _changeThrust(self):
+        thrustPercentage = self.thrustSlider.value()
+        labelTest = 'Thrust (' + str(thrustPercentage) + '%)'
+
+        min_thrust = Config().get("min_thrust")
+        max_thrust = 65536.0  # Config().get("max_thrust") # MAX_THRUST = 65536.0
+        thrustValue = int(round((max_thrust - min_thrust) * thrustPercentage / 100))
+        thrustValueLabel = 'Thrust value = ' + str(thrustValue)
+        # thrustValueLabel = 'Thrust value = ' + str(min_thrust) + ' ' + str(max_thrust)  # str(thrustValue)
+
+        self.thrustLabel.setText(labelTest)
+        self.thrustValueLabel.setText(thrustValueLabel)
+
+    def _setThrust(self):
+        if self.uiState == UIState.CONNECTED:
+            # send_setpoint(self, roll, pitch, yaw, thrust):
+            roll = 0
+            pitch = 0
+            yaw = 0
+            count = 0
+
+            min_thrust = Config().get("min_thrust")
+            max_thrust = 65536.0  # Config().get("max_thrust")
+            thrustPercentage = self.thrustSlider.value()
+            thrustValue = int(round((max_thrust - min_thrust) * thrustPercentage / 100))
+
+            self.cf.commander.send_setpoint(0, 0, 0, 0)
+
+            while count < 20:
+                self.cf.commander.send_setpoint(roll, pitch, yaw, thrustValue)
+                time.sleep(0.1)
+                count += 1
+
+            self.cf.commander.send_setpoint(0, 0, 0, 0)
+
+            #self.cf.commander.send_setpoint(roll, pitch, yaw, thrustValue)
+        else:
+            logger.info("Something went wrong")  # FIXME
 
     def _rescan_devices(self):
         self._statusbar_label.setText("No inputdevice connected!")

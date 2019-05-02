@@ -189,7 +189,17 @@
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox">
-        <layout class="QHBoxLayout" stretch="0,0,1">
+        <layout class="QHBoxLayout" stretch="0,0,0,1,0,0,0">
+         <item>
+          <widget class="QPushButton" name="autoControl">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>pleaseFly</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QLabel" name="addressLabel">
            <property name="text">
@@ -217,6 +227,27 @@
            </property>
            <property name="checked">
             <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="thrustValueLabel">
+           <property name="text">
+            <string>Thrust value = 0</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="thrustLabel">
+           <property name="text">
+            <string>Thrust (0%)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSlider" name="thrustSlider">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
           </widget>
          </item>
@@ -249,7 +280,7 @@
            <x>0</x>
            <y>0</y>
            <width>852</width>
-           <height>506</height>
+           <height>498</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -262,16 +293,7 @@
           <property name="sizeConstraint">
            <enum>QLayout::SetNoConstraint</enum>
           </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
+          <property name="margin">
            <number>0</number>
           </property>
           <item row="0" column="0">
@@ -301,7 +323,7 @@
      <x>0</x>
      <y>0</y>
      <width>872</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
