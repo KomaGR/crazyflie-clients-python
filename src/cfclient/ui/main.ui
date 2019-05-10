@@ -204,7 +204,7 @@
         <property name="title">
          <string/>
         </property>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -225,9 +225,23 @@
            </widget>
           </item>
           <item>
+           <widget class="QLabel" name="initialHeight">
+            <property name="text">
+             <string>No height</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="targetHeightLabel">
+            <property name="text">
+             <string>Target height</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Height (m)</string>
+             <string>Offset Height (m):</string>
             </property>
            </widget>
           </item>
@@ -241,7 +255,7 @@
           <item>
            <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>Duration (sec)</string>
+             <string>Duration (sec):</string>
             </property>
            </widget>
           </item>
@@ -480,7 +494,7 @@
      <x>0</x>
      <y>0</y>
      <width>1168</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

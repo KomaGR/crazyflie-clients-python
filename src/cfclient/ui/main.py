@@ -44,6 +44,7 @@ from cfclient.utils.zmq_param import ZMQParamAccess
 from cflib.crazyflie import Crazyflie
 from cflib.crazyflie.log import LogConfig
 from cflib.crazyflie.mem import MemoryElement
+from cflib.crazyflie.syncLogger import SyncLogger
 from PyQt5 import QtWidgets
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSignal
@@ -503,7 +504,7 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.thrustSlider.valueChanged.connect(self._changeThrust)
 
             self.takeOffButton.setEnabled(True)
-            self.autoControl.clicked.connect(self._takeOff)
+            self.takeOffButton.clicked.connect(self._takeOff)
         elif self.uiState == UIState.CONNECTING:
             s = "Connecting to {} ...".format(self._selected_interface)
             self.setWindowTitle(s)
@@ -606,15 +607,30 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
     def _takeOff(self):
         if self.uiState == UIState.CONNECTED:
             controllerType = self.contollerSlider.value()
-            resetEstimator = self.resetEstimatorCheck.checked()
+            resetEstimator = self.resetEstimatorCheck.isChecked()
 
-            height = float(self.takeOffHeightText.text())
+            offsetHeight = float(self.takeOffHeightText.text())
             duration = float(self.takeOffDurationText.text())
 
-            if resetEstimator == 1:
+            if resetEstimator is True:
                 self.cf.param.set_value('kalman.resetEstimation', '1')
                 time.sleep(0.1)
                 self.cf.param.set_value('kalman.resetEstimation', '0')
+
+            log_config = LogConfig(name='My logging', period_in_ms=100)
+            log_config.add_variable('stateEstimate.z', 'float')
+
+            with SyncLogger(self.cf, log_config) as mylogger:
+                for log_entry in mylogger:
+                    data = log_entry[1]
+
+                    initialHeightValue = round(data['stateEstimate.z'], 1)
+                    break
+                    # print('aoua: %f' % (round(data['stateEstimate.z'], 1)))
+
+            self.initialHeight.setText('Height ' + str(initialHeightValue) + ' m')
+            height = initialHeightValue + offsetHeight
+            self.targetHeightLabel.setText('Target Height ' + str(height) + ' m')
 
             if controllerType == 0:  # basic
                 self.cf.param.set_value('flightmode.posSet', '1')
@@ -632,8 +648,8 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
                 # land(self, absolute_height_m, duration_s, group_mask=ALL_GROUPS):
 
                 commander.takeoff(height, duration)
-                time.sleep(1.0)
-                commander.land(0.0, duration)
+                time.sleep(3.0)
+                commander.land(initialHeightValue, duration)
                 time.sleep(2.0)
                 commander.stop()
         else:
