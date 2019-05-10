@@ -479,6 +479,9 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.interfaceCombo.setEnabled(True)
 
             self.thrustSlider.valueChanged.connect(self._changeThrust)
+
+            self.autoControl.setEnabled(False)
+            self.takeOffButton.setEnabled(False)
         elif self.uiState == UIState.CONNECTED:
             s = "Connected on %s" % self._selected_interface
             self.setWindowTitle(s)
@@ -498,6 +501,9 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.autoControl.setEnabled(True)
             self.autoControl.clicked.connect(self._setThrust)
             self.thrustSlider.valueChanged.connect(self._changeThrust)
+
+            self.takeOffButton.setEnabled(True)
+            self.autoControl.clicked.connect(self._takeOff)
         elif self.uiState == UIState.CONNECTING:
             s = "Connecting to {} ...".format(self._selected_interface)
             self.setWindowTitle(s)
@@ -594,6 +600,42 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.cf.commander.send_setpoint(0, 0, 0, 0)
 
             #self.cf.commander.send_setpoint(roll, pitch, yaw, thrustValue)
+        else:
+            logger.info("Something went wrong")  # FIXME
+
+    def _takeOff(self):
+        if self.uiState == UIState.CONNECTED:
+            controllerType = self.contollerSlider.value()
+            resetEstimator = self.resetEstimatorCheck.checked()
+
+            height = float(self.takeOffHeightText.text())
+            duration = float(self.takeOffDurationText.text())
+
+            if resetEstimator == 1:
+                self.cf.param.set_value('kalman.resetEstimation', '1')
+                time.sleep(0.1)
+                self.cf.param.set_value('kalman.resetEstimation', '0')
+
+            if controllerType == 0:  # basic
+                self.cf.param.set_value('flightmode.posSet', '1')
+
+                for i in range(10):
+                    self.cf.commander.send_position_setpoint(0.0, 0.0, height, 0)
+                    time.sleep(0.1)
+
+                self.cf.commander.send_stop_setpoint()
+            else:  # high level
+                self.cf.param.set_value('commander.enHighLevel', '1')
+
+                commander = self.cf.high_level_commander
+                # takeoff(self, absolute_height_m, duration_s, group_mask=ALL_GROUPS)
+                # land(self, absolute_height_m, duration_s, group_mask=ALL_GROUPS):
+
+                commander.takeoff(height, duration)
+                time.sleep(1.0)
+                commander.land(0.0, duration)
+                time.sleep(2.0)
+                commander.stop()
         else:
             logger.info("Something went wrong")  # FIXME
 

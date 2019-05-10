@@ -188,8 +188,111 @@
        </layout>
       </item>
       <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+        <widget class="QWidget" name="">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>0</y>
+           <width>1121</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QPushButton" name="takeOffButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>takeOff</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Height (m)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="takeOffHeightText">
+            <property name="text">
+             <string>0.1</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Duration (sec)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="takeOffDurationText">
+            <property name="text">
+             <string>2</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Basic</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="contollerSlider">
+            <property name="maximum">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>High level</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="resetEstimatorCheck">
+            <property name="text">
+             <string>Reset Estimator</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
        <widget class="QGroupBox" name="groupBox">
-        <layout class="QHBoxLayout" stretch="0,0,0,1,0,0,0,0,0,0,0,0,0">
+        <layout class="QHBoxLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0">
          <item>
           <widget class="QPushButton" name="autoControl">
            <property name="enabled">
@@ -334,7 +437,7 @@
            <x>0</x>
            <y>0</y>
            <width>1148</width>
-           <height>549</height>
+           <height>503</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -377,7 +480,7 @@
      <x>0</x>
      <y>0</y>
      <width>1168</width>
-     <height>27</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
