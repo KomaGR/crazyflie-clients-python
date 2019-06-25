@@ -483,6 +483,7 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
 
             self.autoControl.setEnabled(False)
             self.takeOffButton.setEnabled(False)
+            self.hoverButton.setEnabled(False)
         elif self.uiState == UIState.CONNECTED:
             s = "Connected on %s" % self._selected_interface
             self.setWindowTitle(s)
@@ -505,6 +506,9 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
 
             self.takeOffButton.setEnabled(True)
             self.takeOffButton.clicked.connect(self._takeOff)
+
+            self.hoverButton.setEnabled(True)
+            self.hoverButton.clicked.connect(self._hover)
         elif self.uiState == UIState.CONNECTING:
             s = "Connecting to {} ...".format(self._selected_interface)
             self.setWindowTitle(s)
@@ -652,6 +656,32 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
                 commander.land(initialHeightValue, duration)
                 time.sleep(2.0)
                 commander.stop()
+        else:
+            logger.info("Something went wrong")  # FIXME
+
+    def _hover(self):
+        if self.uiState == UIState.CONNECTED:
+
+            vx = float(self.hoverVxText.text())
+            vy = float(self.hoverVyText.text())
+            yawrate = float(self.hoverYawrateText.text())
+            zDistance = float(self.hoverZDistanceText.text())
+            durationCs = 100 * float(self.hoverDurationText.text())
+
+            self.cf.commander.send_setpoint(0, 0, 0, 0)
+            time.sleep(0.5)
+            self.cf.param.set_value("flightmode.althold", "True")
+
+            it = 0
+            while it < durationCs:
+                self.cf.commander.send_hover_setpoint(vx, vy, yawrate, zDistance)
+                self.cf.param.set_value("flightmode.althold", "True")
+                time.sleep(0.01)
+                it += 1
+
+            self.cf.commander.send_setpoint(0, 0, 0, 0)
+
+            #commander.stop()
         else:
             logger.info("Something went wrong")  # FIXME
 
