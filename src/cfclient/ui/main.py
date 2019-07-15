@@ -482,6 +482,7 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.thrustSlider.valueChanged.connect(self._changeThrust)
 
             self.autoControl.setEnabled(False)
+            self.profileThrust.setEnabled(False)
             self.takeOffButton.setEnabled(False)
             self.hoverButton.setEnabled(False)
         elif self.uiState == UIState.CONNECTED:
@@ -502,6 +503,10 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
 
             self.autoControl.setEnabled(True)
             self.autoControl.clicked.connect(self._setThrust)
+
+            self.profileThrust.setEnabled(True)
+            self.profileThrust.clicked.connect(self._profileThrust)
+
             self.thrustSlider.valueChanged.connect(self._changeThrust)
 
             self.takeOffButton.setEnabled(True)
@@ -556,11 +561,10 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
         min_thrust = Config().get("min_thrust")
         max_thrust = 65536.0  # Config().get("max_thrust") # MAX_THRUST = 65536.0
         thrustValue = int(round((max_thrust - min_thrust) * thrustPercentage / 100))
-        thrustValueLabel = 'Thrust value = ' + str(thrustValue)
-        # thrustValueLabel = 'Thrust value = ' + str(min_thrust) + ' ' + str(max_thrust)  # str(thrustValue)
+        #thrustValueLabel = 'Thrust value = ' + str(thrustValue)
 
         self.thrustLabel.setText(labelTest)
-        self.thrustValueLabel.setText(thrustValueLabel)
+        #self.thrustValueLabel.setText(thrustValueLabel)
 
     def _setThrust(self):
         if self.uiState == UIState.CONNECTED:
@@ -601,6 +605,36 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
                     self.cf.commander.send_setpoint(roll, pitch, yaw, thrustValue)
                     time.sleep(0.1)
                     count += 1
+
+            self.cf.commander.send_setpoint(0, 0, 0, 0)
+
+            #self.cf.commander.send_setpoint(roll, pitch, yaw, thrustValue)
+        else:
+            logger.info("Something went wrong")  # FIXME
+
+    def _profileThrust(self):
+        if self.uiState == UIState.CONNECTED:
+            # send_setpoint(self, roll, pitch, yaw, thrust):
+            roll = 0
+            pitch = 0
+            yaw = 0
+            count = 0
+            profileSeconds = 10
+            sleepTimeSec = 0.1
+
+            min_thrust = Config().get("min_thrust")
+            max_thrust = 65536.0  # Config().get("max_thrust")
+            thrustPercentage = self.thrustSlider.value()
+            thrustValue = int(round((max_thrust - min_thrust) * thrustPercentage / 100))
+
+            countMax = int(profileSeconds / sleepTimeSec)
+
+            self.cf.commander.send_setpoint(0, 0, 0, 0)
+
+            while count < countMax:
+                self.cf.commander.send_setpoint(roll, pitch, yaw, thrustValue)
+                time.sleep(sleepTimeSec)
+                count += 1
 
             self.cf.commander.send_setpoint(0, 0, 0, 0)
 

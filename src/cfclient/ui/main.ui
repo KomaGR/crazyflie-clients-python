@@ -507,9 +507,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="thrustValueLabel">
+          <widget class="QPushButton" name="profileThrust">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="text">
-            <string>Thrust value = 0</string>
+            <string>profileT</string>
            </property>
           </widget>
          </item>
