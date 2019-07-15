@@ -619,7 +619,7 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             pitch = 0
             yaw = 0
             count = 0
-            profileSeconds = 10
+            profileSeconds = int(self.countText.text())
             sleepTimeSec = 0.1
 
             min_thrust = Config().get("min_thrust")
