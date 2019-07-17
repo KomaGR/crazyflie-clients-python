@@ -45,6 +45,8 @@ from cflib.crazyflie import Crazyflie
 from cflib.crazyflie.log import LogConfig
 from cflib.crazyflie.mem import MemoryElement
 from cflib.crazyflie.syncLogger import SyncLogger
+from cflib.crazyflie.pwmMotorsControl import PwmMotors
+
 from PyQt5 import QtWidgets
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSignal
@@ -483,6 +485,7 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
 
             self.autoControl.setEnabled(False)
             self.profileThrust.setEnabled(False)
+            self.profilePWM.setEnabled(False)
             self.takeOffButton.setEnabled(False)
             self.hoverButton.setEnabled(False)
         elif self.uiState == UIState.CONNECTED:
@@ -506,6 +509,9 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
 
             self.profileThrust.setEnabled(True)
             self.profileThrust.clicked.connect(self._profileThrust)
+
+            self.profilePWM.setEnabled(True)
+            self.profilePWM.clicked.connect(self._profilePWM)
 
             self.thrustSlider.valueChanged.connect(self._changeThrust)
 
@@ -556,7 +562,7 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
 
     def _changeThrust(self):
         thrustPercentage = self.thrustSlider.value()
-        labelTest = 'Thrust (' + str(thrustPercentage) + '%)'
+        labelTest = 'Thrust/PWM (' + str(thrustPercentage) + '%)'
 
         min_thrust = Config().get("min_thrust")
         max_thrust = 65536.0  # Config().get("max_thrust") # MAX_THRUST = 65536.0
@@ -639,6 +645,33 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.cf.commander.send_setpoint(0, 0, 0, 0)
 
             #self.cf.commander.send_setpoint(roll, pitch, yaw, thrustValue)
+        else:
+            logger.info("Something went wrong")  # FIXME
+
+    def _profilePWM(self):
+        if self.uiState == UIState.CONNECTED:
+            logger.info("Executing")
+            #count = 0
+            profileSeconds = int(self.countText.text())
+            #sleepTimeSec = 0.1
+
+            min_pwm = 0
+            max_pwm = 65536.0  # check
+            pwmPercentage = self.thrustSlider.value()
+            pwmValue = int(round((max_pwm - min_pwm) * pwmPercentage / 100))
+
+            #countMax = int(profileSeconds / sleepTimeSec)
+
+            self.cf.pwmMotorsControl.send_PWMsetpointAll(0, 0)
+
+            #while count < countMax:
+            #    self.cf.pwmMotorsControl.send_PWMsetpointAll(pwmValue)
+            #    time.sleep(sleepTimeSec)
+            #    count += 1
+            self.cf.pwmMotorsControl.send_PWMsetpointAll(pwmValue,profileSeconds)
+            time.sleep(profileSeconds)
+
+            self.cf.pwmMotorsControl.send_PWMsetpointAll(0, 0)
         else:
             logger.info("Something went wrong")  # FIXME
 

@@ -411,7 +411,7 @@
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox">
-        <layout class="QHBoxLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0">
+        <layout class="QHBoxLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
          <item>
           <widget class="QPushButton" name="autoControl">
            <property name="enabled">
@@ -517,9 +517,19 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="profilePWM">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>profilePWM</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="thrustLabel">
            <property name="text">
-            <string>Thrust (0%)</string>
+            <string>Thrust/PWM (0%)</string>
            </property>
           </widget>
          </item>
