@@ -651,25 +651,27 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
     def _profilePWM(self):
         if self.uiState == UIState.CONNECTED:
             logger.info("Executing")
-            #count = 0
             profileSeconds = int(self.countText.text())
-            #sleepTimeSec = 0.1
+            sweepOn = self.thrustSweepEnable.isChecked()
 
             min_pwm = 0
             max_pwm = 65536.0  # check
-            pwmPercentage = self.thrustSlider.value()
-            pwmValue = int(round((max_pwm - min_pwm) * pwmPercentage / 100))
-
-            #countMax = int(profileSeconds / sleepTimeSec)
 
             self.cf.pwmMotorsControl.send_PWMsetpointAll(0, 0)
 
-            #while count < countMax:
-            #    self.cf.pwmMotorsControl.send_PWMsetpointAll(pwmValue)
-            #    time.sleep(sleepTimeSec)
-            #    count += 1
-            self.cf.pwmMotorsControl.send_PWMsetpointAll(pwmValue,profileSeconds)
-            time.sleep(profileSeconds)
+            if sweepOn == False:
+                pwmPercentage = self.thrustSlider.value()
+                pwmValue = int(round((max_pwm - min_pwm) * pwmPercentage / 100))
+
+                self.cf.pwmMotorsControl.send_PWMsetpointAll(pwmValue,profileSeconds)
+                time.sleep(profileSeconds)
+            else:
+                pwmStartValue = int(self.iterationsText.text())
+                pwmMaxValue = int(self.maxTText.text())
+                pwmIncValue = int(self.decreasePercText.text())
+
+                self.cf.pwmMotorsControl.send_PWMsweep(pwmStartValue, pwmMaxValue, pwmIncValue, profileSeconds)
+                time.sleep(((pwmMaxValue-pwmStartValue)/pwmIncValue)*profileSeconds)
 
             self.cf.pwmMotorsControl.send_PWMsetpointAll(0, 0)
         else:

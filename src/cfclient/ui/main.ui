@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1161</width>
-    <height>882</height>
+    <width>1708</width>
+    <height>973</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -411,7 +411,7 @@
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox">
-        <layout class="QHBoxLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+        <layout class="QHBoxLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
          <item>
           <widget class="QPushButton" name="autoControl">
            <property name="enabled">
@@ -455,21 +455,21 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Iterations</string>
+            <string>Iterations/Start</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLineEdit" name="iterationsText">
            <property name="text">
-            <string>5</string>
+            <string>30</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Decrease</string>
+            <string>Decrease/Inc</string>
            </property>
           </widget>
          </item>
@@ -488,7 +488,7 @@
             </size>
            </property>
            <property name="text">
-            <string>0.01</string>
+            <string>10</string>
            </property>
           </widget>
          </item>
@@ -502,7 +502,7 @@
          <item>
           <widget class="QLineEdit" name="countText">
            <property name="text">
-            <string>10</string>
+            <string>5</string>
            </property>
           </widget>
          </item>
@@ -527,6 +527,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QCheckBox" name="thrustSweepEnable">
+           <property name="text">
+            <string>Sweep</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="thrustLabel">
            <property name="text">
             <string>Thrust/PWM (0%)</string>
@@ -537,6 +544,20 @@
           <widget class="QSlider" name="thrustSlider">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>MaxT</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="maxTText">
+           <property name="text">
+            <string>100</string>
            </property>
           </widget>
          </item>
@@ -568,8 +589,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>1141</width>
-           <height>594</height>
+           <width>1688</width>
+           <height>685</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -611,7 +632,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1161</width>
+     <width>1708</width>
      <height>25</height>
     </rect>
    </property>
