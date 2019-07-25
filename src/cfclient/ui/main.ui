@@ -315,6 +315,124 @@
        </widget>
       </item>
       <item>
+       <widget class="QGroupBox" name="logControl">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="title">
+         <string>Log Control</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <widget class="QLineEdit" name="bufferSizeText">
+         <property name="geometry">
+          <rect>
+           <x>563</x>
+           <y>0</y>
+           <width>124</width>
+           <height>25</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="enableLoggingCheckbox">
+         <property name="geometry">
+          <rect>
+           <x>101</x>
+           <y>1</y>
+           <width>130</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Enable Logging</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="enabledStartupText">
+         <property name="geometry">
+          <rect>
+           <x>834</x>
+           <y>0</y>
+           <width>125</width>
+           <height>25</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_17">
+         <property name="geometry">
+          <rect>
+           <x>693</x>
+           <y>0</y>
+           <width>135</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Enabled on Startup:</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="logFreqText">
+         <property name="geometry">
+          <rect>
+           <x>347</x>
+           <y>0</y>
+           <width>125</width>
+           <height>25</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_16">
+         <property name="geometry">
+          <rect>
+           <x>478</x>
+           <y>0</y>
+           <width>79</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Buffer Size:</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="modeText">
+         <property name="geometry">
+          <rect>
+           <x>1014</x>
+           <y>0</y>
+           <width>125</width>
+           <height>25</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_18">
+         <property name="geometry">
+          <rect>
+           <x>965</x>
+           <y>0</y>
+           <width>43</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Mode:</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_15">
+         <property name="geometry">
+          <rect>
+           <x>237</x>
+           <y>0</y>
+           <width>104</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Log Frequency:</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
        <widget class="QGroupBox" name="groupBox_3">
         <property name="title">
          <string/>
@@ -559,7 +677,7 @@
            <x>0</x>
            <y>0</y>
            <width>1141</width>
-           <height>594</height>
+           <height>545</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -572,7 +690,16 @@
           <property name="sizeConstraint">
            <enum>QLayout::SetNoConstraint</enum>
           </property>
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item row="0" column="0">
@@ -602,7 +729,7 @@
      <x>0</x>
      <y>0</y>
      <width>1161</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

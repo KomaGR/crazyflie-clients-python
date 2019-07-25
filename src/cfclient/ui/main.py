@@ -485,6 +485,8 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.profileThrust.setEnabled(False)
             self.takeOffButton.setEnabled(False)
             self.hoverButton.setEnabled(False)
+
+            self.enableLoggingCheckbox.setEnabled(False)
         elif self.uiState == UIState.CONNECTED:
             s = "Connected on %s" % self._selected_interface
             self.setWindowTitle(s)
@@ -514,6 +516,9 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
 
             self.hoverButton.setEnabled(True)
             self.hoverButton.clicked.connect(self._hover)
+
+            self.enableLoggingCheckbox.setEnabled(True)
+            self.enableLoggingCheckbox.toggled.connect(self._toggleLogging)
         elif self.uiState == UIState.CONNECTING:
             s = "Connecting to {} ...".format(self._selected_interface)
             self.setWindowTitle(s)
@@ -526,6 +531,7 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.address.setEnabled(False)
             self.menuItemBootloader.setEnabled(False)
             self.interfaceCombo.setEnabled(False)
+            self.enableLoggingCheckbox.setEnabled(False)
         elif self.uiState == UIState.SCANNING:
             self.setWindowTitle("Scanning ...")
             self.connectButton.setText("Connect")
@@ -537,6 +543,7 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.address.setEnabled(False)
             self.menuItemBootloader.setEnabled(False)
             self.interfaceCombo.setEnabled(False)
+            self.enableLoggingCheckbox.setEnabled(False)
 
     @pyqtSlot(bool)
     def toggleToolbox(self, display):
@@ -1028,6 +1035,14 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
         self.close()
         sys.exit(0)
 
+    def _toggleLogging(self):
+        if self.enableLoggingCheckbox.isChecked():
+            self.cf.param.set_value('usd.logging', '1')
+            print("Logging enable signal sent")
+        else:
+            self.cf.param.set_value('usd.logging', '0')
+            print("Logging disable signal sent")
+            
 
 class ScannerThread(QThread):
 
