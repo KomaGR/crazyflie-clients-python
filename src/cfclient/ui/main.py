@@ -486,6 +486,7 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.takeOffButton.setEnabled(False)
             self.hoverButton.setEnabled(False)
 
+            self.enableLoggingCheckbox.setCheckState(False)
             self.enableLoggingCheckbox.setEnabled(False)
         elif self.uiState == UIState.CONNECTED:
             s = "Connected on %s" % self._selected_interface
@@ -517,7 +518,9 @@ class MainUI(QtWidgets.QMainWindow, main_window_class):
             self.hoverButton.setEnabled(True)
             self.hoverButton.clicked.connect(self._hover)
 
-            self.enableLoggingCheckbox.setEnabled(True)
+            self.enableLoggingCheckbox.setEnabled(True)            
+            # self.enableLoggingCheckbox.setCheckState(
+            #     self.cf.param.values['usd']['logging'])
             self.enableLoggingCheckbox.toggled.connect(self._toggleLogging)
         elif self.uiState == UIState.CONNECTING:
             s = "Connecting to {} ...".format(self._selected_interface)
